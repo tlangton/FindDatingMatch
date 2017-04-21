@@ -7,12 +7,10 @@
 
 var friendsArray = [
   {
-    fName: "Ahmed",
-    fEmail: "ahmed@example.com",
-    fID: "afhaque89",
-    phoneNumber: "000-000-0000"
+    Name: "Franklin",
+    q1: "66"
   }
 ];
 
 // Note how we export the array. This makes it accessible to other files using require.
-module.exports = friendsArray;
+exports.friendsArray = friendsArray;
