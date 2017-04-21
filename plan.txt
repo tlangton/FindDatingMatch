@@ -1,0 +1,5 @@
+make server
+
+make form
+
+send form data to js to push into array
