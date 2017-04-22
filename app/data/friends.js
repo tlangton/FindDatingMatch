@@ -14,7 +14,25 @@ var friendsArray = [
       "3",
       "333"
       ]
-  }
+  },
+  {
+    name: "Patrick",
+    "values": [
+      "5",
+      "5",
+      "5",
+      "555"
+      ]
+  },
+  {
+      name: "Angelo",
+      "values": [
+        "1",
+        "1",
+        "1",
+        "111"
+        ]
+    }
 ];
 
 // Note how we export the array. This makes it accessible to other files using require.

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="https://code.jquery.com/jquery.js"></script>
-    <title>Survey</title>
+    <title>ESP</title>
 
     <!-- Latest compiled and minified CSS & JS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -21,15 +21,15 @@
   <body>
     <div class="container">
     <div class="jumbotron">
-	<h1>Poll</h1>
+	<h1><strong>EXTRA SENSORY PERCEPTION <br> CONFIRMATOR</strong></h1>
 
 
-  <h3><strong>Your name:</strong></h3>
+  <h3><strong>Enter your name:</strong></h3>
   <input type="text" id="name" name="name" value="">
 
 
 
-<h3><strong>Question 1</strong></h3>
+<h3><strong>First digit!</strong></h3>
 <h4>First ESP declaration.</h4>
 <select data-placeholder="" class="chosen-select" id="q1">
   <option value=""></option>
@@ -41,7 +41,7 @@
     </select>
 <br>
 
-<h3><strong>Question 2</strong></h3>
+<h3><strong>Number 2 digit!</strong></h3>
 <h4>Second ESP declaration.</h4>
 <select data-placeholder="" class="chosen-select" id="q2">
   <option value=""></option>
@@ -53,7 +53,7 @@
     </select>
 <br>
 
-<h3><strong>Question 3</strong></h3>
+<h3><strong>Tertiary integer!</strong></h3>
 <h4>Third ESP declaration.</h4>
 <select data-placeholder="" class="chosen-select" id="q3">
   <option value=""></option>
@@ -67,79 +67,34 @@
 
 <br>
 
-    <div>
-      <button type="submit" class="btn btn-primary btn-md" id="add-btn">Submit</button>
-    </div>
+
+<div class="row">
+  <div class="col-md-4"><button type="submit" class="btn btn-primary btn-md" id="add-btn">Submit</button></div>
+  <div class="col-md-4">
+Your answers are concatened into a 3 digit number and compared to previous entries. Using you extra sensory perception, enter a value that will match another entry.
+  </div>
+  <div class="col-md-4">The closest entry names will be shown. Exact matches will be highlighted. But you knew that.</div>
+</div>
+
+
+
   </div>
 </div>
 
-<script type="text/javascript">
 
-  $("#add-btn").on("click", function(event) {
-    event.preventDefault();
-
-//values from the form by id -
-    var newSurvey = {
-      name: $("#name").val().trim(),
-      values: [
-      $("#q1").val(),
-      $("#q2").val(),
-      $("#q3").val(),
-      $("#q1").val() + $("#q2").val()+ $("#q3").val()
-      ]
-    };
-var localuser = newSurvey;
-    // Grab the URL of the website
-    var currentURL = window.location.origin;
-//sends the 'body' data in the newSurvey variable to the api post new route
-    $.post("/api/new", newSurvey)
-    .done(function(newSurvey) {
-      console.log(newSurvey);
-      // console.log(localuser.values[3]);
-      // console.log(currentURL);
-
-      var currentUser = localuser.values[3];
-      var lowdelta = 999;
-      for (var i = 0; i < newSurvey.length - 1 ; i++) {
-        // console.log(newSurvey[i].values[3]);
-        var thisUserValue = (newSurvey[i].values[3]);
-        var thisUser = (newSurvey[i].name);
-        // console.log(currentUser);
-        // console.log(thisUser);
-        var diff = currentUser - thisUserValue;
-        diff = Math.abs(diff);
-        console.log("dif: " + Math.abs(diff));
-
-        if (lowdelta > diff) {
-          var lowdelta = diff;
-          var lowdeltaUser = thisUser;
-        }
-
-      }
-      console.log(lowdelta);
-      console.log("Closest: "+lowdeltaUser);
-
-      // console.log(newSurvey[0]);
-      // window.location= currentURL + "/api/friends";
-    });
-  });
-</script>
-
-
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
 
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Modal Header</h4>
+        <h4 class="modal-title">The closest match:</h4>
       </div>
       <div class="modal-body">
-        <p>Some text in the modal.</p>
+        <p id="matched-user"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -149,7 +104,67 @@ var localuser = newSurvey;
   </div>
 </div>
 
+<script type="text/javascript">
 
+$("#add-btn").on("click", function(event) {
+  event.preventDefault();
+
+  //values from the form by id -
+  var newSurvey = {
+    name: $("#name").val().trim(),
+    values: [
+      $("#q1").val(),
+      $("#q2").val(),
+      $("#q3").val(),
+      $("#q1").val() + $("#q2").val()+ $("#q3").val()
+    ]
+  };
+
+
+  // Grab the URL of the website
+  var currentURL = window.location.origin;
+  //sends the 'body' data in the newSurvey variable to the api post new route
+  $.post("/api/new", newSurvey)
+  .done(function(allAnswers) {
+    var lowdeltaUser = "";
+    var currentUser = newSurvey.values[3];
+    var lowdelta = Infinity;
+    for (var i = 0; i < allAnswers.length - 1 ; i++) {
+      var thisUserValue = (allAnswers[i].values[3]);
+      var thisUser = (allAnswers[i].name);
+
+      var diff = currentUser - thisUserValue;
+      diff = Math.abs(diff);
+      console.log("dif: " + Math.abs(diff));
+
+      if (lowdelta > diff) {
+        lowdelta = diff;
+        lowdeltaUser = thisUser;
+      }
+    }
+    console.log(lowdelta);
+    console.log("Closest: "+lowdeltaUser);
+
+    if (lowdelta === 0 ) {
+      var modalContent ="EXACT MATCH with "+ lowdeltaUser;
+    } else {
+      var modalContent ="Closest to "+ lowdeltaUser;
+    }
+
+    $("#matched-user").text(modalContent)
+    $("#myModal").modal()
+
+
+  });
+});
+
+$('#myModal').on('hidden.bs.modal', function (e) {
+  // alert("hi")
+  window.location = "/";
+})
+
+
+</script>
 
 </body>
 </html>
