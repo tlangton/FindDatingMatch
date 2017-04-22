@@ -7,8 +7,13 @@
 
 var friendsArray = [
   {
-    Name: "Franklin",
-    q1: "66"
+    name: "Franklin",
+    "values": [
+      "3",
+      "3",
+      "3",
+      "333"
+      ]
   }
 ];
 

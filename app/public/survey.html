@@ -68,7 +68,7 @@
 <br>
 
     <div>
-      <button type="submit" class="btn btn-primary btn-md" id="add-btn"><span class="glyphicon glyphicon-fire"></span>Submit</button>
+      <button type="submit" class="btn btn-primary btn-md" id="add-btn">Submit</button>
     </div>
   </div>
 </div>
@@ -84,18 +84,43 @@
       values: [
       $("#q1").val(),
       $("#q2").val(),
-      $("#q3").val()
+      $("#q3").val(),
+      $("#q1").val() + $("#q2").val()+ $("#q3").val()
       ]
     };
-
+var localuser = newSurvey;
     // Grab the URL of the website
     var currentURL = window.location.origin;
 //sends the 'body' data in the newSurvey variable to the api post new route
     $.post("/api/new", newSurvey)
-    .done(function(data) {
-      // console.log(data);
-    });
+    .done(function(newSurvey) {
+      console.log(newSurvey);
+      // console.log(localuser.values[3]);
+      // console.log(currentURL);
 
+      var currentUser = localuser.values[3];
+      var lowdelta = 999;
+      for (var i = 0; i < newSurvey.length - 1 ; i++) {
+        // console.log(newSurvey[i].values[3]);
+        var thisUserValue = (newSurvey[i].values[3]);
+        var thisUser = (newSurvey[i].name);
+        // console.log(currentUser);
+        // console.log(thisUser);
+        var diff = currentUser - thisUserValue;
+        // console.log("dif: " + Math.abs(diff));
+
+        if (lowdelta > diff) {
+          var lowdelta = diff;
+          var lowdeltaUser = thisUser;
+        }
+
+      }
+      console.log(lowdelta);
+      console.log(lowdeltaUser);
+
+      // console.log(newSurvey[0]);
+      // window.location= currentURL + "/api/friends";
+    });
   });
 </script>
 
