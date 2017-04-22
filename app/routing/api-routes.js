@@ -1,4 +1,3 @@
-
 // this page also requires link to original "data"
 var myData = require("../data/friends.js");
 var friendsArray = myData.friendsArray;
