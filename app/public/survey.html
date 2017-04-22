@@ -107,7 +107,8 @@ var localuser = newSurvey;
         // console.log(currentUser);
         // console.log(thisUser);
         var diff = currentUser - thisUserValue;
-        // console.log("dif: " + Math.abs(diff));
+        diff = Math.abs(diff);
+        console.log("dif: " + Math.abs(diff));
 
         if (lowdelta > diff) {
           var lowdelta = diff;
@@ -116,7 +117,7 @@ var localuser = newSurvey;
 
       }
       console.log(lowdelta);
-      console.log(lowdeltaUser);
+      console.log("Closest: "+lowdeltaUser);
 
       // console.log(newSurvey[0]);
       // window.location= currentURL + "/api/friends";
